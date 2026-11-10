@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64" role="img" aria-label="TJ Law, immigration counsel">
+  <title>TJ Law</title>
+  <!-- Horizontal lockup for letterheads, email signatures and social headers.
+       The wordmark uses Playfair Display with a serif fallback. If you need a
+       copy that is safe everywhere regardless of installed fonts, convert the
+       text to outlines in any vector editor, or use logo-mark.svg on its own. -->
+  <rect width="64" height="64" rx="14" fill="#C9A24D"/>
+  <g fill="none" stroke="#1F2328" stroke-width="6" stroke-linecap="square">
+    <path d="M14 21 H34"/>
+    <path d="M24 21 V47"/>
+    <path d="M46 21 V39 A6 6 0 0 1 34 39"/>
+  </g>
+  <text x="82" y="34" font-family="'Playfair Display', Georgia, 'Times New Roman', serif" font-size="27" font-weight="600" fill="#1F2328">TJ Law</text>
+  <text x="83" y="50" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="9.5" font-weight="700" letter-spacing="2.4" fill="#C9A24D">IMMIGRATION COUNSEL</text>
+</svg>

@@ -1,0 +1,1 @@
+var e=`/assets/attorney-PHzXCZmD.jpg`;export{e as t};
