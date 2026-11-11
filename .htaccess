@@ -1,0 +1,58 @@
+# Server settings for GoDaddy Linux (cPanel / Apache) hosting.
+# This file must sit in the same folder as index.html (normally public_html).
+# Other hosts, such as GitHub Pages, ignore it.
+
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Always use HTTPS. The SSL certificate must be active on the hosting
+  # account before this file is uploaded, or visitors will see a browser
+  # warning instead of the site.
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Stop other websites embedding the site's images directly (hotlinking).
+  # A request that names another site as its referrer is refused.
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} !^([^@]*)@@https?://\1/.*
+  RewriteRule \.(jpe?g|png|gif|webp)$ - [F,NC]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Browsers remember to use HTTPS for a year.
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+
+  # The site may not be shown inside a frame on another site (clickjacking).
+  Header always set X-Frame-Options "DENY"
+
+  # Files are only ever treated as the type the server says they are.
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Outbound links do not reveal which page the visitor was on.
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # The site never asks for the camera, microphone, location or payment APIs.
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+
+  # Only this site's own code may run. The only outside services allowed are
+  # Google Fonts (typefaces) and Formspree (the consultation form).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+
+  # Search engines may list the pages but not the images on them.
+  Header always set X-Robots-Tag "noimageindex"
+</IfModule>
+
+# Files under /assets have a fingerprint in their name, so they can be cached
+# for a long time. Pages are always checked for a newer version.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|jpg|jpeg|png|webp|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
